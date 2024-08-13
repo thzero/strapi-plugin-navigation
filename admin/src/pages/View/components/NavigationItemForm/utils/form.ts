@@ -43,6 +43,7 @@ export const schemaFactory = (isSingleSelected: boolean, additionalFields: Navig
           ),
         otherwise: yup.string().notRequired(),
       }),
+    fetchRelated: yup.boolean(),
     menuAttached: yup.boolean(),
     relatedType: yup.mixed()
       .when('type', {
@@ -92,6 +93,7 @@ export const defaultValues: RawFormPayload = {
   related: "",
   relatedType: "",
   audience: [],
+  fetchRelated: true,
   menuAttached: false,
   title: "",
   externalPath: "",

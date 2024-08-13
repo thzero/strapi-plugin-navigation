@@ -26,6 +26,7 @@
   "popup.item.form.externalPath.label": "External URL",
   "popup.item.form.externalPath.placeholder": "Link to the external source",
   "popup.item.form.externalPath.validation.type": "This value is not a proper url.",
+  "popup.item.form.fetchRelated.label": "Fetch related data",
   "popup.item.form.menuAttached.label": "Attach to menu",
   "popup.item.form.type.label": "Navigation item type",
   "popup.item.form.type.internal.label": "Internal source",

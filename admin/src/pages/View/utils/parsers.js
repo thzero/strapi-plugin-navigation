@@ -16,6 +16,7 @@ export const transformItemToRESTPayload = (
     updated = false,
     removed = false,
     uiRouterKey,
+    fetchRelated,
     menuAttached,
     path,
     externalPath,
@@ -54,6 +55,7 @@ export const transformItemToRESTPayload = (
     collapsed,
     additionalFields,
     autoSync,
+    fetchRelated,
     menuAttached: itemAttachedToMenu,
     audience: audience.map((audienceItem) =>
       isObject(audienceItem)

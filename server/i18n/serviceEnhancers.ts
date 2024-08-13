@@ -165,7 +165,8 @@ export const i18nNavigationItemRead = async ({
   path,
   strapi
 }: I18nNavigationItemReadInput) => {
-    const pickFields = pick(['path', 'related', 'type', 'uiRouterKey', 'title', 'externalPath']);
+    const pickFields = pick(['path', 'related', 'fetchRelated', 'type', 'uiRouterKey', 'title', 'externalPath']);
+    // const pickFields = pick(['path', 'related', 'type', 'uiRouterKey', 'title', 'externalPath']);
     const structurePath = path.split('.').map(p => parseInt(p, 10));
 
     if (!structurePath.some(Number.isNaN) || !structurePath.length) {
@@ -215,6 +216,7 @@ const processItems =
     uiRouterKey: item.uiRouterKey,
     order: item.order,
     collapsed: item.collapsed,
+    fetchRelated: item.fetchRelated,
     menuAttached: item.menuAttached,
     removed: false,
     updated: true,

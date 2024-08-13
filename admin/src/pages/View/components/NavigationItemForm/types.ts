@@ -35,6 +35,7 @@ export type NavigationItemFormData = {
   id?: Id;
   isParentAttachedToMenu?: boolean;
   items?: ToBeFixed[];
+  fetchRelated?: boolean;
   menuAttached?: boolean;
   order?: number;
   parent?: ToBeFixed;
@@ -88,6 +89,7 @@ export type RawFormPayload = {
   related?: string;
   relatedType?: string;
   audience: Id[];
+  fetchRelated: boolean;
   menuAttached: boolean;
   title: string;
   externalPath: string | null;
@@ -99,6 +101,7 @@ export type RawFormPayload = {
 export type SanitizedFormPayload = {
   title: string;
   type: NavigationItemType;
+  fetchRelated: boolean;
   menuAttached: boolean;
   path?: string | null;
   externalPath?: string | null;

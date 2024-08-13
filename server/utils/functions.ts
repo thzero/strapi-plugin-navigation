@@ -358,7 +358,7 @@ export const getPluginModels = (): Record<'masterModel' | 'itemModel' | 'related
 export const validateAdditionalFields = (additionalFields: NavigationItemAdditionalField[]) => {
   const forbiddenNames = [
     'title', 'type', 'path',
-    'externalPath', 'uiRouterKey', 'menuAttached',
+    'externalPath', 'uiRouterKey', 'fetchRelated', 'menuAttached',
     'order', 'collapsed', 'related',
     'parent', 'master', 'audience',
     'additionalFields',

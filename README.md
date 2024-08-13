@@ -182,6 +182,7 @@ Config for this plugin is stored as a part of the `config/plugins.js` or `config
 ### Properties
 - `additionalFields` - Additional fields for navigation items. More **[ here ](#additional-fields)**
 - `allowedLevels` - Maximum level for which you're able to mark item as "Menu attached"
+- `fetchRelated` - Whether to fetch related content in navigation APIs
 - `contentTypes` - UIDs of related content types
 - `contentTypesNameFields` - Definition of content type title fields like `'api::<collection name>.<content type name>': ['field_name_1', 'field_name_2']`, if not set titles are pulled from fields like `['title', 'subject', 'name']`. **TIP** - Proper content type uid you can find in the URL of Content Manager where you're managing relevant entities like: `admin/content-manager/collectionType/< THE UID HERE >?page=1&pageSize=10&sort=Title:ASC&plugins[i18n][locale]=en`
 - `pathDefaultFields` - The attribute to copy the default path from per content type. Syntax: `'api::<collection name>.<content type name>': ['url_slug', 'path']`
@@ -298,6 +299,7 @@ Is applied for **Public API** both for REST and GraphQL. You can manage is by tw
     "path": "news",
     "externalPath": null,
     "uiRouterKey": "News",
+    "fetchRelated": false,
     "menuAttached": false,
     "parent": 8, // Parent Navigation Item 'id', null in case of root level
     "master": 1, // Navigation 'id'
@@ -312,6 +314,7 @@ Is applied for **Public API** both for REST and GraphQL. You can manage is by tw
 ```json
 {
     "title": "News",
+    "fetchRelated": true,
     "menuAttached": true,
     "path": "/news",
     "type": "INTERNAL",
@@ -324,6 +327,7 @@ Is applied for **Public API** both for REST and GraphQL. You can manage is by tw
     "items": [
         {
             "title": "External url",
+            "fetchRelated": true,
             "menuAttached": true,
             "path": "http://example.com",
             "type": "EXTERNAL",
@@ -349,6 +353,7 @@ Is applied for **Public API** both for REST and GraphQL. You can manage is by tw
     "path": "/news",
     "slug": "news",
     "parent": null, // Parent Navigation Item 'id', null in case of root level
+    "fetchRelated": true,
     "menuAttached": true
 }
 ```
@@ -372,6 +377,9 @@ Plugin supports both **REST API** and **GraphQL API** exposed by Strapi.
 
 - `path` - String value for querying navigation items by its path:
   > `https://localhost:1337/api/navigation/render/1?path=/home/about-us`
+  
+- `fetchRelated` - Boolean value to control lookup of the related content.  Passing in false will not return any related content.
+  > `https://localhost:1337/api/navigation/render/1?fetchRelated=true`
 
 ### REST API
 
@@ -465,6 +473,7 @@ Return a rendered navigation structure depends on passed type (`TREE`, `RFR` or 
         "path": "news",
         "externalPath": null,
         "uiRouterKey": "News",
+        "fetchRelated": false,
         "menuAttached": false,
         "parent": null,
         "master": 1,
@@ -489,6 +498,7 @@ Return a rendered navigation structure depends on passed type (`TREE`, `RFR` or 
 [
     {
         "title": "News",
+        "fetchRelated": true,
         "menuAttached": true,
         "path": "/news",
         "type": "INTERNAL",
@@ -536,6 +546,7 @@ Return a rendered navigation structure depends on passed type (`TREE`, `RFR` or 
             "path": "/news",
             "slug": "news",
             "parent": null,
+            "fetchRelated": true,
             "menuAttached": true
         },
         "Community": {
@@ -550,6 +561,7 @@ Return a rendered navigation structure depends on passed type (`TREE`, `RFR` or 
             "path": "/community",
             "slug": "community",
             "parent": null,
+            "fetchRelated": true,
             "menuAttached": true
         },
         "Highlights": {
@@ -564,6 +576,7 @@ Return a rendered navigation structure depends on passed type (`TREE`, `RFR` or 
             "path": "/community/highlights",
             "slug": "community-highlights",
             "parent": "Community",
+            "fetchRelated": false,
             "menuAttached": false
         },
         // ...

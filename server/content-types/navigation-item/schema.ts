@@ -56,6 +56,11 @@ export default {
       type: "string",
       configurable: false
     },
+    fetchRelated: {
+      type: "boolean",
+      default: false,
+      configurable: false
+    },
     menuAttached: {
       type: "boolean",
       default: false,

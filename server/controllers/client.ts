@@ -30,7 +30,7 @@ const clientControllers: IClientController = {
 
   async render(ctx) {
     const { params, query = {} } = ctx;
-    const { type, menu: menuOnly, path: rootPath, locale, populate } = query;
+    const { type, menu: menuOnly, path: rootPath, locale, fetchRelated, populate } = query;
     const { idOrSlug } = parseParams<StringMap<string>, { idOrSlug: Id }>(
       params
     );
@@ -41,6 +41,7 @@ const clientControllers: IClientController = {
         menuOnly,
         rootPath,
         locale,
+        fetchRelated: fetchRelated == 'true' ? true : false,
         populate: sanitizePopulateField(populate) as ToBeFixed,
       });
     } catch (error: unknown) {

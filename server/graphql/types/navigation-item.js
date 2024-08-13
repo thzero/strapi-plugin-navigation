@@ -8,6 +8,7 @@ module.exports = ({ nexus, config }) =>
       t.string("path");
       t.string("externalPath");
       t.nonNull.string("uiRouterKey");
+      t.nonNull.boolean("fetchRelated");
       t.nonNull.boolean("menuAttached");
       t.nonNull.int("order");
       t.field("parent", { type: "NavigationItem" })

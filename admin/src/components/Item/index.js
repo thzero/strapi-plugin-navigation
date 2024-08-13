@@ -49,6 +49,7 @@ const Item = (props) => {
     path,
     removed,
     externalPath,
+    fetchRelated,
     menuAttached,
     collapsed,
     structureId,
@@ -140,9 +141,10 @@ const Item = (props) => {
     viewId,
     isNextMenuAllowedLevel,
     absolutePath,
+    fetchRelated,
     menuAttached,
     `${structureId}.${items.length}`,
-  ), [viewId, isNextMenuAllowedLevel, absolutePath, menuAttached, structureId, items, canUpdate]);
+  ), [viewId, isNextMenuAllowedLevel, absolutePath, fetchRelated, menuAttached, structureId, items, canUpdate]);
 
   useEffect(() => {
     if (isSearchActive) {
@@ -257,6 +259,7 @@ Item.propTypes = {
     path: PropTypes.string,
     externalPath: PropTypes.string,
     related: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    fetchRelated: PropTypes.bool,
     menuAttached: PropTypes.bool,
     collapsed: PropTypes.bool,
   }).isRequired,

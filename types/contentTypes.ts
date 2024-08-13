@@ -20,6 +20,7 @@ export type NavigationItem = NavigationItemPartial & {
   audience: string[];
   externalPath?: string;
   related: RelatedRef[];
+  fetchRelated: boolean;
   removed: boolean;
   updated: boolean;
   slug?: string
@@ -46,6 +47,7 @@ type NavigationItemPartial = {
   title: string;
   type: NavigationItemType;
   collapsed: boolean;
+  fetchRelated: boolean;
   menuAttached: boolean;
   order: number;
   uiRouterKey: string;

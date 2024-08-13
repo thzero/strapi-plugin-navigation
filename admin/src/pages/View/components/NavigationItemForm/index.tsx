@@ -102,6 +102,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
         customFieldsValues: get(data, "additionalFields", [] as ToBeFixed),
         defaultCustomFieldsValues: formDefinition.defaultValues.additionalFields
       }),
+      fetchRelated: get(data, "fetchRelated", formDefinition.defaultValues.fetchRelated),
       menuAttached: get(data, "menuAttached", formDefinition.defaultValues.menuAttached),
       path: get(data, "path", formDefinition.defaultValues.path),
       externalPath: get(data, "externalPath", formDefinition.defaultValues.externalPath),
@@ -151,7 +152,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
     }, [contentTypeEntities, contentTypesNameFields, contentTypes]);
 
   const sanitizePayload = async (slugify: Slugify, payload: RawFormPayload, data: Partial<NavigationItemFormData>): Promise<SanitizedFormPayload> => {
-    const { related, relatedType, menuAttached, type, ...purePayload } = payload;
+    const { related, relatedType, fetchRelated, menuAttached, type, ...purePayload } = payload;
     const relatedId = related;
     const singleRelatedItem = isSingleSelected ? first(contentTypeEntities) : undefined;
     const relatedCollectionType = relatedType;
@@ -165,6 +166,7 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
       ...purePayload,
       title,
       type,
+      fetchRelated: isNil(fetchRelated) ? false : fetchRelated,
       menuAttached: isNil(menuAttached) ? false : menuAttached,
       path: type !== navigationItemType.EXTERNAL ? purePayload.path || getDefaultPath() : undefined,
       externalPath: type === navigationItemType.EXTERNAL ? purePayload.externalPath : undefined,
@@ -515,6 +517,17 @@ const NavigationItemForm: React.FC<NavigationItemFormProps> = ({
                 onChange={({ target: { name, value } }: GenericInputOnChangeInput) => onChange({ name, value })}
                 value={formik.values.type}
               />
+            </GridItem>
+            <GridItem key="fetchRelated" col={4} lg={12}>
+              <GenericInput
+                intlLabel={getTrad('popup.item.form.fetchRelated.label', 'fetchRelated')}
+                name="fetchRelated"
+                type="bool"
+                error={formik.errors.fetchRelated}
+                onChange={({ target: { name, value } }: GenericInputOnChangeInput) => onChange({ name, value })}
+                value={formik.values.fetchRelated}
+                disabled={!canUpdate}
+                />
             </GridItem>
             <GridItem key="menuAttached" col={4} lg={12}>
               <GenericInput

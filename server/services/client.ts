@@ -48,6 +48,7 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
     type = RENDER_TYPES.FLAT,
     menuOnly = false,
     rootPath = null,
+    fetchRelated = false,
     wrapRelated = false,
     locale,
     populate,
@@ -58,7 +59,7 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
     const criteria = findById ? { id: idOrSlug } : { slug: idOrSlug };
     const itemCriteria = menuOnly ? { menuAttached: true } : {};
     return await clientService.renderType({
-      type, criteria, itemCriteria, filter: null, rootPath, wrapRelated, locale, populate
+      type, criteria, itemCriteria, filter: null, rootPath, fetchRelated, wrapRelated, locale, populate
     });
   },
 
@@ -67,6 +68,7 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
     childUIKey,
     type = RENDER_TYPES.FLAT,
     menuOnly = false,
+    fetchRelated = false,
     wrapRelated = false,
     locale,
   }) {
@@ -80,7 +82,8 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
       ...(type === RENDER_TYPES.FLAT ? { uiRouterKey: childUIKey } : {}),
     };
 
-    return clientService.renderType({ type, criteria, itemCriteria, filter, rootPath: null, wrapRelated, locale });
+    return clientService.renderType({ type, criteria, itemCriteria, filter, rootPath: null, fetchRelated, wrapRelated, locale });
+    // return clientService.renderType({ type, criteria, itemCriteria, filter, rootPath: null, wrapRelated, locale });
   },
 
   renderRFR({
@@ -201,7 +204,7 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
     parent,
     enabledCustomFieldsNames,
   ) {
-    const { uiRouterKey, title, path, slug, related, type, audience, menuAttached } = item;
+    const { uiRouterKey, title, path, slug, related, type, audience, fetchRelated, menuAttached } = item;
     const { __contentType, id, __templateName } = related || {};
     const contentType = __contentType || '';
     return {
@@ -216,6 +219,7 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
       slug,
       parent,
       audience,
+      fetchRelated,
       menuAttached,
       ...enabledCustomFieldsNames.reduce((acc, field) => ({ ...acc, [field]: get(item, field) }), {})
     };
@@ -271,6 +275,7 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
     itemCriteria = {},
     filter = null,
     rootPath = null,
+    fetchRelated = false,
     wrapRelated = false,
     locale,
     populate,
@@ -336,6 +341,7 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
             const slug = isString(parentPath) ? await commonService.getSlug(
               (first(parentPath) === '/' ? parentPath.substring(1) : parentPath).replace(/\//g, '-')) : undefined;
             const lastRelated = isArray(item.related) ? last(item.related) : item.related;
+            const fetchRelatedCheck = fetchRelated || item.fetchRelated;
             const relatedContentType = wrapContentType(lastRelated);
             const customFields = enabledCustomFieldsNames.reduce((acc, field) => {
               const mapper = customFieldsDefinitions.find(({ name }) => name === field)?.type === "media"
@@ -349,6 +355,7 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
             return {
               id: item.id,
               title: composeItemTitle(item, contentTypesNameFields, contentTypes),
+              fetchRelated: item.fetchRelated,
               menuAttached: item.menuAttached,
               order: item.order,
               path: isExternal ? item.externalPath : parentPath,
@@ -356,7 +363,7 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
               uiRouterKey: item.uiRouterKey,
               slug: !slug && item.uiRouterKey ? commonService.getSlug(item.uiRouterKey) : slug,
               external: isExternal,
-              related: isExternal || !lastRelated ? undefined : {
+              related: isExternal || !lastRelated || !fetchRelatedCheck ? undefined : {
                 ...relatedContentType,
                 __templateName: getTemplateName((lastRelated.relatedType || lastRelated.__contentType), lastRelated.id),
               },
