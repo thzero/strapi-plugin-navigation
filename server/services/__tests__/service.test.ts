@@ -163,6 +163,84 @@ describe("Navigation services", () => {
       expect(result).toBeDefined();
       expect(result.length).toBe(1);
     });
+    
+    it("Can render related content", async () => {
+      const clientService = getPluginService("client");
+      const result = await clientService.render({
+        idOrSlug: 1,
+        type: RENDER_TYPES.FLAT,
+        fetchRelated: true,
+      });
+
+      expect(result).toBeDefined();
+      expect(result.length).toBe(2);
+      expect(result[0].related).toBeInstanceOf(Object);
+    });
+
+    // it("Can render related content", async () => {
+    //   const clientService = getPluginService("client");
+    //   const result = await clientService.render({
+    //     idOrSlug: 1,
+    //     type: RENDER_TYPES.RFR,
+    //     fetchRelated: true,
+    //   });
+
+    //   expect(result).toBeDefined();
+    //   expect(result.length).toBe(1);
+    //   expect(result[0].related).toBeInstanceOf(Object);
+    // });
+    
+    it("Can render related content", async () => {
+      const clientService = getPluginService("client");
+      const result = await clientService.render({
+        idOrSlug: 1,
+        type: RENDER_TYPES.TREE,
+        fetchRelated: true,
+      });
+
+      expect(result).toBeDefined();
+      expect(result.length).toBe(1);
+      expect(result[0].related).toBeInstanceOf(Object);
+    });
+
+    it("Can render without related content by api override", async () => {
+      const clientService = getPluginService("client");
+      const result = await clientService.render({
+        idOrSlug: 1,
+        type: RENDER_TYPES.FLAT,
+        fetchRelated: false,
+      });
+
+      expect(result).toBeDefined();
+      expect(result.length).toBe(2);
+      expect(result[0].related).toBeUndefined();
+    });
+
+    // it("Can render without related content by api override", async () => {
+    //   const clientService = getPluginService("client");
+    //   const result = await clientService.render({
+    //     idOrSlug: 1,
+    //     type: RENDER_TYPES.RFR,
+    //     fetchRelated: false,
+    //   });
+
+    //   expect(result).toBeDefined();
+    //   expect(result.length).toBe(1);
+    //   expect(result[0].related).toBeUndefined();
+    // });
+
+    it("Can render without related content by api override", async () => {
+      const clientService = getPluginService("client");
+      const result = await clientService.render({
+        idOrSlug: 1,
+        type: RENDER_TYPES.TREE,
+        fetchRelated: false,
+      });
+
+      expect(result).toBeDefined();
+      expect(result.length).toBe(1);
+      expect(result[0].related).toBeUndefined();
+    });
 
     it("Can render branch by path", async () => {
       const clientService = getPluginService("client");

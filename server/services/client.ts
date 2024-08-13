@@ -341,7 +341,9 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
             const slug = isString(parentPath) ? await commonService.getSlug(
               (first(parentPath) === '/' ? parentPath.substring(1) : parentPath).replace(/\//g, '-')) : undefined;
             const lastRelated = isArray(item.related) ? last(item.related) : item.related;
-            const fetchRelatedCheck = fetchRelated || item.fetchRelated;
+            let fetchRelatedCheck = fetchRelated;
+            if (fetchRelatedCheck)
+              fetchRelatedCheck =  item.fetchRelated;
             const relatedContentType = wrapContentType(lastRelated);
             const customFields = enabledCustomFieldsNames.reduce((acc, field) => {
               const mapper = customFieldsDefinitions.find(({ name }) => name === field)?.type === "media"
@@ -441,11 +443,15 @@ const clientService: (context: StrapiContext) => IClientService = ({ strapi }) =
                 return { ...acc, [field]: content ? mapper(content) : content }
               }, {});
 
+              let fetchRelatedCheck = fetchRelated;
+              if (fetchRelatedCheck)
+                fetchRelatedCheck =  item.fetchRelated;
+              
               return ({
                 ...item,
                 audience: item.audience?.map(_ => (_).key),
                 title: composeItemTitle({ ...item, additionalFields }, contentTypesNameFields, contentTypes) || '',
-                related: wrapContentType(item.related),//omit(item.related, 'localizations'),
+                related: fetchRelatedCheck ? wrapContentType(item.related) : undefined,//omit(item.related, 'localizations'),
                 items: null,
                 ...customFields,
               })})
